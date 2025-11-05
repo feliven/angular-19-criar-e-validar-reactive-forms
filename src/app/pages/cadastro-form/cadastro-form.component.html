@@ -36,6 +36,31 @@
             (levelChange)="onNivelChange($event)"
           >
           </app-experience-level>
+          @if (cadastroForm.get('nivelExperiencia')?.touched &&
+          cadastroForm.get('nivelExperiencia')?.invalid) {
+          <div class="cadastro-form__error">
+            SELECIONE um nível de experiência...
+          </div>
+          }
+        </div>
+        <div class="cadastro-form__actions">
+          <app-button
+            text="Anterior"
+            type="outline"
+            icon="fas fa-arrow-left"
+            iconPosition="left"
+            (clicked)="onAnterior()"
+          >
+          </app-button>
+          <app-button
+            text="Próximo"
+            type="primary"
+            icon="fas fa-arrow-right"
+            iconPosition="right"
+            [disabled]="cadastroForm.invalid"
+            (clicked)="onProximo()"
+          >
+          </app-button>
         </div>
       </form>
     </div>
