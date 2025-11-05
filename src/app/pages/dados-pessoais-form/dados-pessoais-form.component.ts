@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
+  AbstractControlOptions,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -88,14 +89,21 @@ export class DadosPessoaisFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dadosPessoaisForm = this.formBuilder.group({
-      nomeCompleto: ['', Validators.required],
-      estado: ['', Validators.required],
-      cidade: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      senha: ['', [Validators.required, Validators.minLength(8)]],
-      repitaSenha: ['', Validators.required],
-    });
+    const formOptions: AbstractControlOptions = {
+      validators: senhasIguaisValidator,
+    };
+
+    this.dadosPessoaisForm = this.formBuilder.group(
+      {
+        nomeCompleto: ['', Validators.required],
+        estado: ['', Validators.required],
+        cidade: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        senha: ['', [Validators.required, Validators.minLength(8)]],
+        repitaSenha: ['', Validators.required],
+      },
+      formOptions
+    );
   }
 
   onAnterior(): void {

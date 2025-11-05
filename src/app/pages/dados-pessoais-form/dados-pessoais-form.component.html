@@ -126,7 +126,7 @@
               @if (dadosPessoaisForm.get('repitaSenha')?.errors?.['required'])
               {<span>Confirmação de senha é obrigatória</span>}
             </div>
-            } @if (dadosPessoaisForm.errors?.['senhasNaoIguais'] &&
+            } @if (dadosPessoaisForm.errors?.['senhasSaoDiferentes'] &&
             dadosPessoaisForm.get('repitaSenha')?.touched) {
             <div class="cadastro-form__error">As senhas não coincidem</div>
             }
