@@ -14,7 +14,9 @@ import { CommonModule } from '@angular/common';
       (click)="onClick()"
     >
       {{ text }}
-      <span *ngIf="selected" class="chip__icon">✓</span>
+      @if (selected){
+      <span class="chip__icon">✓</span>
+      }
     </button>
   `,
   styles: [
