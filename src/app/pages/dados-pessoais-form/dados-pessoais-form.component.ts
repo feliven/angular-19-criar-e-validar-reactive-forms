@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { ButtonComponent } from '../../shared/components/button/button.component';
@@ -18,6 +21,23 @@ import { CadastroService } from '../../shared/services/cadastro.service';
 //   senha: string;
 //   repitaSenha: string;
 // }
+
+export const senhasIguaisValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const senha = control.get('senha');
+  const repitaSenha = control.get('repitaSenha');
+
+  // senhasIguaisValidator takes an AbstractControl and returns either ValidationErrors or null.
+  // It gets references to two form controls: senha E repitaSenha.
+
+  return senha && repitaSenha && senha.value === repitaSenha.value
+    ? null
+    : { senhasSaoDiferentes: true };
+
+  // If both fields exist AND their values are equal → returns null (valid)
+  // If fields don't exist OR values are different → returns { senhasSaoDiferentes: true } (invalid)
+};
 
 @Component({
   selector: 'app-dados-pessoais-form',
