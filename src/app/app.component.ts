@@ -7,24 +7,15 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { CommonModule } from '@angular/common';
 
-const COMPONENTS = [
-  HeaderComponent,
-  FooterComponent,
-  CadastroFormComponent
-];
+const COMPONENTS = [HeaderComponent, FooterComponent, CadastroFormComponent];
 
-const MODULES = [
-  ReactiveFormsModule
-];
+const MODULES = [ReactiveFormsModule];
 
 @Component({
   selector: 'app-root',
-  imports: [
-    ...COMPONENTS,
-    ...MODULES
-  ],
+  imports: [...COMPONENTS, ...MODULES],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'freelando-reactive-form';

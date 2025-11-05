@@ -4,7 +4,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   selector: 'app-radio-option',
   standalone: true,
   templateUrl: './radio-option.component.html',
-  styleUrls: ['./radio-option.component.scss']
+  styleUrls: ['./radio-option.component.scss'],
 })
 export class RadioOptionComponent {
   @Input() id: string = '';

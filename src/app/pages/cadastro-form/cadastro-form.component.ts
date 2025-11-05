@@ -2,19 +2,14 @@ import { Component } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-const MODULES = [
-  CommonModule,
-  ReactiveFormsModule
-];
+const MODULES = [CommonModule, ReactiveFormsModule];
 
 @Component({
   selector: 'app-cadastro-form',
   standalone: true,
-  imports: [
-    ...MODULES
-  ],
+  imports: [...MODULES],
   templateUrl: './cadastro-form.component.html',
-  styleUrls: ['./cadastro-form.component.scss']
+  styleUrls: ['./cadastro-form.component.scss'],
 })
 export class CadastroFormComponent {
   cadastroForm!: FormGroup;
@@ -25,24 +20,24 @@ export class CadastroFormComponent {
     { id: 'revisao', value: 'revisao', label: 'Revisão' },
     { id: 'traducao', value: 'traducao', label: 'Tradução' },
     { id: 'transcricao', value: 'transcricao', label: 'Transcrição' },
-    { id: 'marketing', value: 'marketing', label: 'Marketing' }
+    { id: 'marketing', value: 'marketing', label: 'Marketing' },
   ];
 
   niveisExperiencia = [
     {
       id: 'iniciante',
       label: 'Iniciante',
-      description: '(1 a 3 anos)'
+      description: '(1 a 3 anos)',
     },
     {
       id: 'intermediario',
       label: 'Intermediário',
-      description: '(3 a 6 anos)'
+      description: '(3 a 6 anos)',
     },
     {
       id: 'avancado',
       label: 'Avançado',
-      description: '(6 anos ou mais)'
-    }
+      description: '(6 anos ou mais)',
+    },
   ];
 }

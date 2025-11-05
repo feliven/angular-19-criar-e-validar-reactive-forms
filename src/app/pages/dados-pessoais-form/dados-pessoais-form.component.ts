@@ -6,13 +6,9 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 @Component({
   selector: 'app-dados-pessoais-form',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    ButtonComponent
-  ],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
   templateUrl: './dados-pessoais-form.component.html',
-  styleUrls: ['./dados-pessoais-form.component.scss']
+  styleUrls: ['./dados-pessoais-form.component.scss'],
 })
 export class DadosPessoaisFormComponent {
   dadosPessoaisForm!: FormGroup;

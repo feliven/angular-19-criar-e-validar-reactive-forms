@@ -1,6 +1,8 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
-export function cpfValidator(control: AbstractControl): ValidationErrors | null {
+export function cpfValidator(
+  control: AbstractControl
+): ValidationErrors | null {
   if (!control.value) {
     return null;
   }

@@ -2,17 +2,19 @@
   <div class="cadastro-form__container">
     <div class="cadastro-form__card">
       <h2 class="cadastro-form__title">Crie seu cadastro</h2>
-      <p class="cadastro-form__subtitle">Melhore sua descrição para atrair clientes!</p>
+      <p class="cadastro-form__subtitle">
+        Melhore sua descrição para atrair clientes!
+      </p>
 
       <form [formGroup]="perfilForm" (ngSubmit)="onProximo()">
-
         <div class="cadastro-form__actions">
           <app-button
             text="Anterior"
             type="outline"
             icon="fas fa-arrow-left"
             iconPosition="left"
-            (clicked)="onAnterior()">
+            (clicked)="onAnterior()"
+          >
           </app-button>
 
           <app-button
@@ -21,7 +23,8 @@
             icon="fas fa-arrow-right"
             iconPosition="right"
             [disabled]="perfilForm.invalid"
-            (clicked)="onProximo()">
+            (clicked)="onProximo()"
+          >
           </app-button>
         </div>
       </form>

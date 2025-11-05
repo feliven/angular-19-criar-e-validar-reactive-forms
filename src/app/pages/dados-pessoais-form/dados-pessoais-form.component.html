@@ -4,19 +4,20 @@
       <h2 class="cadastro-form__title">Crie seu cadastro</h2>
 
       <p class="cadastro-form__description">
-        Crie seu perfil gratuitamente para começar a trabalhar com os melhores freelancers.
-        Em seguida, você poderá dar mais detalhes sobre suas demandas e sobre sua forma de trabalho.
+        Crie seu perfil gratuitamente para começar a trabalhar com os melhores
+        freelancers. Em seguida, você poderá dar mais detalhes sobre suas
+        demandas e sobre sua forma de trabalho.
       </p>
 
       <form [formGroup]="dadosPessoaisForm" (ngSubmit)="onProximo()">
-
         <div class="cadastro-form__actions">
           <app-button
             text="Anterior"
             type="outline"
             icon="fas fa-arrow-left"
             iconPosition="left"
-            (clicked)="onAnterior()">
+            (clicked)="onAnterior()"
+          >
           </app-button>
 
           <app-button
@@ -25,7 +26,8 @@
             icon="fas fa-arrow-right"
             iconPosition="right"
             [disabled]="dadosPessoaisForm.invalid"
-            (clicked)="onProximo()">
+            (clicked)="onProximo()"
+          >
           </app-button>
         </div>
       </form>

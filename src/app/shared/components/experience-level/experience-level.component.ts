@@ -10,11 +10,9 @@ interface ExperienceLevel {
 @Component({
   selector: 'app-experience-level',
   standalone: true,
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule],
   templateUrl: './experience-level.component.html',
-  styleUrls: ['./experience-level.component.scss']
+  styleUrls: ['./experience-level.component.scss'],
 })
 export class ExperienceLevelComponent {
   @Input() levels: ExperienceLevel[] = [];
