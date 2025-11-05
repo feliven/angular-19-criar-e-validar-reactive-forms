@@ -59,6 +59,8 @@ export class DadosPessoaisFormComponent implements OnInit {
     { sigla: 'TO', nome: 'Tocantins' },
   ];
 
+  cidades = [{ nome: 'São Paulo' }];
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
