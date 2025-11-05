@@ -26,6 +26,17 @@
             }
           </div>
         </div>
+        <div class="cadastro-form__section">
+          <h3 class="cadastro-form__section-title">
+            Qual é o nível de instrução?
+          </h3>
+          <app-experience-level
+            [levels]="niveisExperiencia"
+            [selectedLevel]="cadastroForm.get('nivelExperiencia')?.value"
+            (levelChange)="onNivelChange($event)"
+          >
+          </app-experience-level>
+        </div>
       </form>
     </div>
   </div>

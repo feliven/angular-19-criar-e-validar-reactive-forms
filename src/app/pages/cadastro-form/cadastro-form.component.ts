@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RadioOptionComponent } from '../../shared/components/radio-option/radio-option.component';
+import { ExperienceLevelComponent } from '../../shared/components/experience-level/experience-level.component';
 
 const MODULES = [CommonModule, ReactiveFormsModule];
 const COMPONENTS = [RadioOptionComponent];
@@ -14,7 +15,7 @@ const COMPONENTS = [RadioOptionComponent];
 @Component({
   selector: 'app-cadastro-form',
   standalone: true,
-  imports: [...MODULES, ...COMPONENTS],
+  imports: [...MODULES, ...COMPONENTS, ExperienceLevelComponent],
   templateUrl: './cadastro-form.component.html',
   styleUrls: ['./cadastro-form.component.scss'],
 })
@@ -57,7 +58,11 @@ export class CadastroFormComponent implements OnInit {
     });
   }
 
-  onNext() {}
+  onNext() {
+    if (this.cadastroForm.valid) {
+      console.log('Formulário VÁLIDO');
+    }
+  }
 
   onAreaChange(area: string) {
     this.cadastroForm.get('areasAtuacao')?.setValue(area);
