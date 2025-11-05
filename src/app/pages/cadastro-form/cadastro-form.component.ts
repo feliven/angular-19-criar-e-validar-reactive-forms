@@ -10,6 +10,7 @@ import { RadioOptionComponent } from '../../shared/components/radio-option/radio
 import { ExperienceLevelComponent } from '../../shared/components/experience-level/experience-level.component';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { Router } from '@angular/router';
+import { CadastroService } from '../../shared/services/cadastro.service';
 
 const MODULES = [CommonModule, ReactiveFormsModule];
 const COMPONENTS = [
@@ -55,7 +56,11 @@ export class CadastroFormComponent implements OnInit {
     },
   ];
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private cadastroService: CadastroService
+  ) {}
 
   ngOnInit(): void {
     this.cadastroForm = this.formBuilder.group({
@@ -82,6 +87,10 @@ export class CadastroFormComponent implements OnInit {
 
   onProximo() {
     if (this.cadastroForm.valid) {
+      this.cadastroService.atualizarDadosCadastro({
+        areaAtuacao: this.cadastroForm.get('areaAtuacao')?.value,
+        nivelExperiencia: this.cadastroForm.get('nivelExperiencia')?.value,
+      });
       this.router.navigate(['/cadastro/dados-pessoais']);
     }
   }

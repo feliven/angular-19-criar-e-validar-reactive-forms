@@ -35,4 +35,8 @@ export class CadastroService {
     this.dadosCadastroSubject.next(dadosAtualizados);
     localStorage.setItem('dadosCadastro', JSON.stringify(dadosAtualizados));
   }
+
+  getDadosCadastro(): DadosCadastroInterface {
+    return this.dadosCadastroSubject.value;
+  }
 }
