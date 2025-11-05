@@ -1,17 +1,24 @@
-import { Component } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RadioOptionComponent } from '../../shared/components/radio-option/radio-option.component';
 
 const MODULES = [CommonModule, ReactiveFormsModule];
+const COMPONENTS = [RadioOptionComponent];
 
 @Component({
   selector: 'app-cadastro-form',
   standalone: true,
-  imports: [...MODULES],
+  imports: [...MODULES, ...COMPONENTS],
   templateUrl: './cadastro-form.component.html',
   styleUrls: ['./cadastro-form.component.scss'],
 })
-export class CadastroFormComponent {
+export class CadastroFormComponent implements OnInit {
   cadastroForm!: FormGroup;
 
   areasAtuacao = [
@@ -40,4 +47,23 @@ export class CadastroFormComponent {
       description: '(6 anos ou mais)',
     },
   ];
+
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.cadastroForm = this.formBuilder.group({
+      areasAtuacao: ['área de atuação', Validators.required],
+      niveisExperiencia: ['nível de experiência', Validators.required],
+    });
+  }
+
+  onNext() {}
+
+  onAreaChange(area: string) {
+    this.cadastroForm.get('areasAtuacao')?.setValue(area);
+  }
+
+  onNivelChange(nivel: string) {
+    this.cadastroForm.get('niveisExperiencia')?.setValue(nivel);
+  }
 }

@@ -2,6 +2,31 @@
   <div class="cadastro-form__container">
     <div class="cadastro-form__card">
       <h2 class="cadastro-form__title">Crie seu cadastro</h2>
+      <form [formGroup]="cadastroForm" (ngSubmit)="onNext()">
+        <div class="cadastro-form__section">
+          <h3 class="cadastro-form__section-title">
+            Qual é a área de atuação?
+          </h3>
+          <div class="cadastro-form__radio-group">
+            @for (area of areasAtuacao; track $index) {
+            <app-radio-option
+              [id]="area.id"
+              [name]="'areaAtuacao'"
+              [value]="area.value"
+              [label]="area.label"
+              [checked]="cadastroForm.get('areaAtuacao')?.value === area.value"
+              (selectionChange)="onAreaChange($event)"
+            >
+            </app-radio-option>
+            } @if (cadastroForm.get('areaAtuacao')?.touched &&
+            cadastroForm.get('areaAtuacao')?.invalid) {
+            <div class="cadastro-form__error">
+              SELECIONE uma área de atuação...
+            </div>
+            }
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>
