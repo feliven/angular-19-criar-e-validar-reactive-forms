@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { RadioOptionComponent } from '../../shared/components/radio-option/radio-option.component';
 import { ExperienceLevelComponent } from '../../shared/components/experience-level/experience-level.component';
 import { ButtonComponent } from '../../shared/components/button/button.component';
+import { Router } from '@angular/router';
 
 const MODULES = [CommonModule, ReactiveFormsModule];
 const COMPONENTS = [
@@ -54,7 +55,7 @@ export class CadastroFormComponent implements OnInit {
     },
   ];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
     this.cadastroForm = this.formBuilder.group({
@@ -79,5 +80,9 @@ export class CadastroFormComponent implements OnInit {
 
   onAnterior() {}
 
-  onProximo() {}
+  onProximo() {
+    if (this.cadastroForm.valid) {
+      this.router.navigate(['/cadastro/dados-pessoais']);
+    }
+  }
 }

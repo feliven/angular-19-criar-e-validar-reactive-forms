@@ -7,9 +7,9 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { CommonModule } from '@angular/common';
 
-const COMPONENTS = [HeaderComponent, FooterComponent, CadastroFormComponent];
+const COMPONENTS = [HeaderComponent, FooterComponent];
 
-const MODULES = [ReactiveFormsModule];
+const MODULES = [ReactiveFormsModule, RouterOutlet];
 
 @Component({
   selector: 'app-root',
