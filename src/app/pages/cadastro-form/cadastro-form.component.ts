@@ -8,14 +8,19 @@ import {
 import { CommonModule } from '@angular/common';
 import { RadioOptionComponent } from '../../shared/components/radio-option/radio-option.component';
 import { ExperienceLevelComponent } from '../../shared/components/experience-level/experience-level.component';
+import { ButtonComponent } from '../../shared/components/button/button.component';
 
 const MODULES = [CommonModule, ReactiveFormsModule];
-const COMPONENTS = [RadioOptionComponent];
+const COMPONENTS = [
+  RadioOptionComponent,
+  ExperienceLevelComponent,
+  ButtonComponent,
+];
 
 @Component({
   selector: 'app-cadastro-form',
   standalone: true,
-  imports: [...MODULES, ...COMPONENTS, ExperienceLevelComponent],
+  imports: [...MODULES, ...COMPONENTS],
   templateUrl: './cadastro-form.component.html',
   styleUrls: ['./cadastro-form.component.scss'],
 })
@@ -53,8 +58,8 @@ export class CadastroFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.cadastroForm = this.formBuilder.group({
-      areasAtuacao: ['área de atuação', Validators.required],
-      niveisExperiencia: ['nível de experiência', Validators.required],
+      areaAtuacao: [null, Validators.required],
+      nivelExperiencia: [null, Validators.required],
     });
   }
 
@@ -65,10 +70,14 @@ export class CadastroFormComponent implements OnInit {
   }
 
   onAreaChange(area: string) {
-    this.cadastroForm.get('areasAtuacao')?.setValue(area);
+    this.cadastroForm.get('areaAtuacao')?.setValue(area);
   }
 
   onNivelChange(nivel: string) {
-    this.cadastroForm.get('niveisExperiencia')?.setValue(nivel);
+    this.cadastroForm.get('nivelExperiencia')?.setValue(nivel);
   }
+
+  onAnterior() {}
+
+  onProximo() {}
 }
