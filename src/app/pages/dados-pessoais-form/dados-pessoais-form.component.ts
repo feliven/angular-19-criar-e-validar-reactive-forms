@@ -10,9 +10,23 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { ButtonComponent } from '../../shared/components/button/button.component';
 import { Router } from '@angular/router';
+import {
+  BehaviorSubject,
+  Observable,
+  of,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
+
+import { ButtonComponent } from '../../shared/components/button/button.component';
 import { CadastroService } from '../../shared/services/cadastro.service';
+import {
+  Cidade,
+  Estado,
+  IbgeService,
+} from '../../shared/services/ibge.service';
 
 // interface DadosFormularioInterface {
 //   nomeCompleto: string;
@@ -50,42 +64,18 @@ export const senhasIguaisValidator: ValidatorFn = (
 export class DadosPessoaisFormComponent implements OnInit {
   dadosPessoaisForm!: FormGroup;
 
-  estados = [
-    { sigla: 'AC', nome: 'Acre' },
-    { sigla: 'AL', nome: 'Alagoas' },
-    { sigla: 'AP', nome: 'Amapá' },
-    { sigla: 'AM', nome: 'Amazonas' },
-    { sigla: 'BA', nome: 'Bahia' },
-    { sigla: 'CE', nome: 'Ceará' },
-    { sigla: 'DF', nome: 'Distrito Federal' },
-    { sigla: 'ES', nome: 'Espírito Santo' },
-    { sigla: 'GO', nome: 'Goiás' },
-    { sigla: 'MA', nome: 'Maranhão' },
-    { sigla: 'MT', nome: 'Mato Grosso' },
-    { sigla: 'MS', nome: 'Mato Grosso do Sul' },
-    { sigla: 'MG', nome: 'Minas Gerais' },
-    { sigla: 'PA', nome: 'Pará' },
-    { sigla: 'PB', nome: 'Paraíba' },
-    { sigla: 'PR', nome: 'Paraná' },
-    { sigla: 'PE', nome: 'Pernambuco' },
-    { sigla: 'PI', nome: 'Piauí' },
-    { sigla: 'RJ', nome: 'Rio de Janeiro' },
-    { sigla: 'RN', nome: 'Rio Grande do Norte' },
-    { sigla: 'RS', nome: 'Rio Grande do Sul' },
-    { sigla: 'RO', nome: 'Rondônia' },
-    { sigla: 'RR', nome: 'Roraima' },
-    { sigla: 'SC', nome: 'Santa Catarina' },
-    { sigla: 'SP', nome: 'São Paulo' },
-    { sigla: 'SE', nome: 'Sergipe' },
-    { sigla: 'TO', nome: 'Tocantins' },
-  ];
+  estados$!: Observable<Estado[]>;
+  cidades$!: Observable<Cidade[]>;
 
-  cidades = [{ nome: 'São Paulo' }];
+  carregandoCidades$ = new BehaviorSubject<boolean>(false);
+
+  // cidades = [{ nome: 'São Paulo' }];
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private cadastroService: CadastroService
+    private cadastroService: CadastroService,
+    private ibgeService: IbgeService
   ) {}
 
   ngOnInit(): void {
@@ -104,6 +94,40 @@ export class DadosPessoaisFormComponent implements OnInit {
       },
       formOptions
     );
+
+    this.carregarEstados();
+    this.addListenerEstado();
+  }
+
+  carregarEstados(): void {
+    this.estados$ = this.ibgeService.getTodosOsEstados();
+  }
+
+  addListenerEstado(): void {
+    const estadoControl = this.dadosPessoaisForm.get('estado');
+    if (estadoControl) {
+      this.cidades$ = estadoControl.valueChanges.pipe(
+        startWith(''),
+        tap(() => {
+          this.resetarCidades(), this.carregandoCidades$.next(true);
+        }),
+        switchMap((uf) => {
+          if (uf) {
+            return this.ibgeService.getCidadesNoEstado(uf).pipe(
+              tap(() => {
+                this.carregandoCidades$.next(false);
+              })
+            );
+          }
+          this.carregandoCidades$.next(false);
+          return of([]);
+        })
+      );
+    }
+  }
+
+  resetarCidades(): void {
+    this.dadosPessoaisForm.get('cidade')?.setValue('');
   }
 
   onAnterior(): void {
@@ -131,3 +155,33 @@ export class DadosPessoaisFormComponent implements OnInit {
     });
   }
 }
+
+// estados = [
+//   { sigla: 'AC', nome: 'Acre' },
+//   { sigla: 'AL', nome: 'Alagoas' },
+//   { sigla: 'AP', nome: 'Amapá' },
+//   { sigla: 'AM', nome: 'Amazonas' },
+//   { sigla: 'BA', nome: 'Bahia' },
+//   { sigla: 'CE', nome: 'Ceará' },
+//   { sigla: 'DF', nome: 'Distrito Federal' },
+//   { sigla: 'ES', nome: 'Espírito Santo' },
+//   { sigla: 'GO', nome: 'Goiás' },
+//   { sigla: 'MA', nome: 'Maranhão' },
+//   { sigla: 'MT', nome: 'Mato Grosso' },
+//   { sigla: 'MS', nome: 'Mato Grosso do Sul' },
+//   { sigla: 'MG', nome: 'Minas Gerais' },
+//   { sigla: 'PA', nome: 'Pará' },
+//   { sigla: 'PB', nome: 'Paraíba' },
+//   { sigla: 'PR', nome: 'Paraná' },
+//   { sigla: 'PE', nome: 'Pernambuco' },
+//   { sigla: 'PI', nome: 'Piauí' },
+//   { sigla: 'RJ', nome: 'Rio de Janeiro' },
+//   { sigla: 'RN', nome: 'Rio Grande do Norte' },
+//   { sigla: 'RS', nome: 'Rio Grande do Sul' },
+//   { sigla: 'RO', nome: 'Rondônia' },
+//   { sigla: 'RR', nome: 'Roraima' },
+//   { sigla: 'SC', nome: 'Santa Catarina' },
+//   { sigla: 'SP', nome: 'São Paulo' },
+//   { sigla: 'SE', nome: 'Sergipe' },
+//   { sigla: 'TO', nome: 'Tocantins' },
+// ];

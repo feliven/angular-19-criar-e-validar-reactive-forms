@@ -36,7 +36,7 @@
               formControlName="estado"
             >
               <option value="" disabled selected>Selecione</option>
-              @for (estado of estados; track $index) {
+              @for (estado of (estados$ | async); track $index) {
               <option [value]="estado.sigla">{{ estado.nome }}</option>
               }
               <!-- <ng-container *ngIf="estado$ | async as estados">
@@ -60,7 +60,7 @@
               formControlName="cidade"
             >
               <option value="" disabled selected>Selecione</option>
-              @for (cidade of cidades; track $index) {
+              @for (cidade of (cidades$ | async); track $index) {
               <option [value]="cidade.nome">{{ cidade.nome }}</option>
               }
             </select>
