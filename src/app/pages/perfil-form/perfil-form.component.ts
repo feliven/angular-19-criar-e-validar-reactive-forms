@@ -1,12 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { Habilidade } from '../../shared/models/habilidade.interface';
 import { CadastroService } from '../../shared/services/cadastro.service';
 import { ChipComponent } from '../../shared/components/chip/chip.component';
+import { Idioma } from '../../shared/models/idioma.interface';
 // import { ChipComponent } from '../../shared/components/chip/chip.component';
 
 @Component({
@@ -18,7 +25,7 @@ import { ChipComponent } from '../../shared/components/chip/chip.component';
 })
 export class PerfilFormComponent implements OnInit {
   perfilForm!: FormGroup;
-  fotoPreview!: string | ArrayBuffer | null;
+  fotoPreview: string | ArrayBuffer | null = null;
 
   habilidades: Habilidade[] = [
     { nome: 'Fullstack', selecionada: false },
@@ -56,10 +63,13 @@ export class PerfilFormComponent implements OnInit {
       portfolio: [''],
       linkedin: [''],
     });
+
+    this.adicionarIdioma('Português', 'Nativo');
   }
 
   onFotoSelecionada(event: Event) {
-    const arquivo = (event?.target as HTMLInputElement)?.files?.[0];
+    const input = event.target as HTMLInputElement;
+    const arquivo = input?.files?.[0];
 
     // onFotoSelecionada(event: Event & { target: HTMLInputElement }) {
     //   const arquivo = event.target.files?.[0];
@@ -98,6 +108,35 @@ export class PerfilFormComponent implements OnInit {
     this.perfilForm.patchValue({ habilidadesSelecionadas });
   }
 
+  get idiomasArray(): FormArray {
+    return this.perfilForm.get('idiomas') as FormArray;
+  }
+
+  adicionarIdioma(nome: string = '', nivel: string = ''): void {
+    const idiomaForm = this.formBuilder.group({
+      nome: [nome, Validators.required],
+      nivel: [nivel, Validators.required],
+    });
+
+    this.idiomasArray.push(idiomaForm);
+  }
+
+  removerIdioma(i: number) {
+    if (i === 0 && this.idiomasArray.at(0).get('nome')?.value === 'Português') {
+      return;
+    }
+    this.idiomasArray.removeAt(i);
+  }
+
+  private extrairIdiomas(): Idioma[] {
+    return this.idiomasArray.controls.map((controle) => {
+      return {
+        nome: controle.get('nome')?.value,
+        nivel: controle.get('nivel')?.value,
+      };
+    });
+  }
+
   private salvarDadosInseridos(): void {
     const dadosInseridos = this.perfilForm.value;
     this.cadastroService.atualizarDadosCadastro({
@@ -105,7 +144,7 @@ export class PerfilFormComponent implements OnInit {
       resumo: dadosInseridos.resumo,
       habilidadesSelecionadas: dadosInseridos.habilidadesSelecionadas,
       // idiomas: dadosInseridos.idiomas,
-      idiomas: [],
+      idiomas: this.extrairIdiomas(),
       portfolio: dadosInseridos.portfolio,
       linkedin: dadosInseridos.linkedin,
     });

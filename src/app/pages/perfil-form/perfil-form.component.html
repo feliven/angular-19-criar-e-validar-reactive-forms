@@ -8,9 +8,7 @@
 
       <form [formGroup]="perfilForm" (ngSubmit)="onProximo()">
         <div class="cadastro-form__field">
-          <label for="nomeCompleto" class="cadastro-form__label"
-            >Sua foto</label
-          >
+          <label for="foto" class="cadastro-form__label">Sua foto</label>
           <div class="cadastro-form__upload-container">
             <div
               class="cadastro-form__upload-area"
@@ -58,6 +56,96 @@
             ></app-chip>
             }
           </div>
+        </div>
+
+        <div class="cadastro-form__field">
+          <div class="cadastro-form__row cadastro-form__row--header">
+            <div class="cadastro-form__column">
+              <label class="cadastro-form__label">Idiomas</label>
+            </div>
+            <div class="cadastro-form__column">
+              <div class="cadastro-form__label">Nível</div>
+            </div>
+          </div>
+          <ng-container formArrayName="idiomas">
+            <!-- *ngFor="let idiomaForm of idiomasArray.controls; let i = index" virou:-->
+            @for (idiomaForm of idiomasArray.controls; let i = $index;track i) {
+            <div class="cadastro-form__row" [formGroupName]="i">
+              <div class="cadastro-form__column">
+                <select class="cadastro-form__select" formControlName="nome">
+                  <option value="" disabled>Escolha o idioma:</option>
+                  @for (idioma of idiomas; track $index) {
+                  <option [value]="idioma">{{ idioma }}</option>
+                  }
+                </select>
+                @if (idiomaForm.get('nome')?.invalid &&
+                idiomaForm.get('nome')?.touched) {
+                <div class="cadastro-form__error">Idioma é obrigatório</div>
+                }
+              </div>
+              <div class="cadastro-form__column">
+                <select class="cadastro-form__select" formControlName="nivel">
+                  <option value="" disabled>Nível de conhecimento:</option>
+                  @for (nivel of niveisIdioma; track $index) {
+                  <option [value]="nivel">{{ nivel }}</option>
+                  }
+                </select>
+                @if (idiomaForm.get('nivel')?.invalid &&
+                idiomaForm.get('nivel')?.touched) {
+                <div class="cadastro-form__error">Nível é obrigatório</div>
+                }
+              </div>
+              <div class="cadastro-form__column cadastro-form__column--actions">
+                @if (i > 0 || idiomaForm.get("nome")?.value !== "Português") {
+                <button
+                  type="button"
+                  class="cadastro-form__icon-button"
+                  (click)="removerIdioma(i)"
+                >
+                  Remover
+                </button>
+                }
+              </div>
+            </div>
+            }
+          </ng-container>
+
+          <div class="cadastro-form__add-button">
+            <button
+              type="button"
+              class="cadastro-form__text-button"
+              (click)="adicionarIdioma()"
+            >
+              <i class="fas fa-plus-circle"></i>Adicionar idiomas
+            </button>
+          </div>
+        </div>
+
+        <!-- campos que falta implementar -->
+        <div class="cadastro-form__field">
+          <label class="cadastro-form__label">Resumo</label>
+          <textarea
+            class="cadastro-form__textarea"
+            formControlName="resumo"
+          ></textarea>
+        </div>
+
+        <div class="cadastro-form__field">
+          <label class="cadastro-form__label">Portfolio</label>
+          <input
+            type="url"
+            class="cadastro-form__input"
+            formControlName="portfolio"
+          />
+        </div>
+
+        <div class="cadastro-form__field">
+          <label class="cadastro-form__label">LinkedIn</label>
+          <input
+            type="url"
+            class="cadastro-form__input"
+            formControlName="linkedin"
+          />
         </div>
 
         <div class="cadastro-form__actions">
