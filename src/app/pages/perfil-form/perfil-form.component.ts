@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { Habilidade } from '../../shared/models/habilidade.interface';
+import { CadastroService } from '../../shared/services/cadastro.service';
 // import { ChipComponent } from '../../shared/components/chip/chip.component';
 
 @Component({
@@ -13,7 +15,7 @@ import { Habilidade } from '../../shared/models/habilidade.interface';
   templateUrl: './perfil-form.component.html',
   styleUrls: ['./perfil-form.component.scss'],
 })
-export class PerfilFormComponent {
+export class PerfilFormComponent implements OnInit {
   perfilForm!: FormGroup;
   fotoPreview: string | ArrayBuffer | undefined;
 
@@ -34,7 +36,51 @@ export class PerfilFormComponent {
 
   idiomas: string[] = ['Português', 'Inglês', 'Espanhol'];
 
-  onAnterior(): void {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private cadastroService: CadastroService
+  ) {}
 
-  onProximo(): void {}
+  ngOnInit(): void {
+    this.inicializarFormulario();
+  }
+
+  onAnterior(): void {
+    this.salvarDadosInseridos();
+    this.router.navigate(['/cadastro/dados-pessoais']);
+  }
+
+  onProximo(): void {
+    if (this.perfilForm.valid) {
+      this.salvarDadosInseridos();
+      this.router.navigate(['/cadastro/confirmacao']);
+    } else {
+      this.perfilForm.markAllAsTouched();
+    }
+  }
+
+  inicializarFormulario(): void {
+    this.perfilForm = this.formBuilder.group({
+      foto: [''],
+      resumo: [''],
+      habilidadesSelecionadas: [[]],
+      idiomas: this.formBuilder.array([]),
+      portfolio: [''],
+      linkedin: [''],
+    });
+  }
+
+  private salvarDadosInseridos(): void {
+    const dadosInseridos = this.perfilForm.value;
+    this.cadastroService.atualizarDadosCadastro({
+      foto: this.fotoPreview,
+      resumo: dadosInseridos.resumo,
+      habilidadesSelecionadas: dadosInseridos.habilidadesSelecionadas,
+      // idiomas: dadosInseridos.idiomas,
+      idiomas: [],
+      portfolio: dadosInseridos.portfolio,
+      linkedin: dadosInseridos.linkedin,
+    });
+  }
 }
