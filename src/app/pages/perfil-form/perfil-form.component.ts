@@ -6,12 +6,13 @@ import { Router } from '@angular/router';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { Habilidade } from '../../shared/models/habilidade.interface';
 import { CadastroService } from '../../shared/services/cadastro.service';
+import { ChipComponent } from '../../shared/components/chip/chip.component';
 // import { ChipComponent } from '../../shared/components/chip/chip.component';
 
 @Component({
   selector: 'app-perfil-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, ChipComponent],
   templateUrl: './perfil-form.component.html',
   styleUrls: ['./perfil-form.component.scss'],
 })
@@ -85,6 +86,16 @@ export class PerfilFormComponent implements OnInit {
     } else {
       this.perfilForm.markAllAsTouched();
     }
+  }
+
+  toggleHabilidade(habilidade: Habilidade): void {
+    habilidade.selecionada = !habilidade.selecionada;
+
+    const habilidadesSelecionadas = this.habilidades
+      .filter((habilidade) => habilidade.selecionada)
+      .map((habilidade) => habilidade.nome);
+
+    this.perfilForm.patchValue({ habilidadesSelecionadas });
   }
 
   private salvarDadosInseridos(): void {
