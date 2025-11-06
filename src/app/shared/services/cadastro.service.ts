@@ -11,7 +11,7 @@ interface DadosCadastroInterface {
   cidade?: string;
   email?: string;
   senha?: string;
-  foto?: string | ArrayBuffer | undefined;
+  foto?: string | ArrayBuffer | null;
   resumo?: string;
   habilidadesSelecionadas?: Habilidade[];
   idiomas?: Idioma[];

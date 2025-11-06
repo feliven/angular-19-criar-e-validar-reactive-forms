@@ -17,7 +17,7 @@ import { CadastroService } from '../../shared/services/cadastro.service';
 })
 export class PerfilFormComponent implements OnInit {
   perfilForm!: FormGroup;
-  fotoPreview: string | ArrayBuffer | undefined;
+  fotoPreview!: string | ArrayBuffer | null;
 
   habilidades: Habilidade[] = [
     { nome: 'Fullstack', selecionada: false },
@@ -46,6 +46,33 @@ export class PerfilFormComponent implements OnInit {
     this.inicializarFormulario();
   }
 
+  inicializarFormulario(): void {
+    this.perfilForm = this.formBuilder.group({
+      foto: [''],
+      resumo: [''],
+      habilidadesSelecionadas: [[]],
+      idiomas: this.formBuilder.array([]),
+      portfolio: [''],
+      linkedin: [''],
+    });
+  }
+
+  onFotoSelecionada(event: Event) {
+    const arquivo = (event?.target as HTMLInputElement)?.files?.[0];
+
+    // onFotoSelecionada(event: Event & { target: HTMLInputElement }) {
+    //   const arquivo = event.target.files?.[0];
+
+    if (arquivo) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.fotoPreview = reader.result;
+        this.perfilForm.patchValue({ foto: reader.result });
+      };
+      reader.readAsDataURL(arquivo);
+    }
+  }
+
   onAnterior(): void {
     this.salvarDadosInseridos();
     this.router.navigate(['/cadastro/dados-pessoais']);
@@ -58,17 +85,6 @@ export class PerfilFormComponent implements OnInit {
     } else {
       this.perfilForm.markAllAsTouched();
     }
-  }
-
-  inicializarFormulario(): void {
-    this.perfilForm = this.formBuilder.group({
-      foto: [''],
-      resumo: [''],
-      habilidadesSelecionadas: [[]],
-      idiomas: this.formBuilder.array([]),
-      portfolio: [''],
-      linkedin: [''],
-    });
   }
 
   private salvarDadosInseridos(): void {

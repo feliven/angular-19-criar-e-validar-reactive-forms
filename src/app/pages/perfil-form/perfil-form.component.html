@@ -7,6 +7,40 @@
       </p>
 
       <form [formGroup]="perfilForm" (ngSubmit)="onProximo()">
+        <div class="cadastro-form__field">
+          <label for="nomeCompleto" class="cadastro-form__label"
+            >Sua foto</label
+          >
+          <div class="cadastro-form__upload-container">
+            <div
+              class="cadastro-form__upload-area"
+              [class.cadastro-form__upload-area--with-preview]="fotoPreview"
+              (click)="fileInput.click()"
+            >
+              @if (!fotoPreview) {
+              <div>
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>
+                  Arraste arquivos para esta área ou clique para fazer o upload
+                </p>
+              </div>
+              } @else {
+              <img
+                [src]="fotoPreview"
+                alt="Preview da foto"
+                class="cadastro-form__foto-preview"
+              />}
+            </div>
+            <input
+              #fileInput
+              type="file"
+              accept="image/*"
+              style="display: none"
+              (change)="onFotoSelecionada($event)"
+            />
+          </div>
+        </div>
+
         <div class="cadastro-form__actions">
           <app-button
             text="Anterior"
