@@ -13,6 +13,7 @@ import {
 import { Router } from '@angular/router';
 import {
   BehaviorSubject,
+  map,
   Observable,
   of,
   startWith,
@@ -100,7 +101,11 @@ export class DadosPessoaisFormComponent implements OnInit {
   }
 
   carregarEstados(): void {
-    this.estados$ = this.ibgeService.getTodosOsEstados();
+    this.estados$ = this.ibgeService
+      .getTodosOsEstados()
+      .pipe(
+        map((estados) => estados.sort((a, b) => a.nome.localeCompare(b.nome)))
+      );
   }
 
   addListenerEstado(): void {
@@ -114,6 +119,9 @@ export class DadosPessoaisFormComponent implements OnInit {
         switchMap((uf) => {
           if (uf) {
             return this.ibgeService.getCidadesNoEstado(uf).pipe(
+              map((cidades) =>
+                cidades.sort((a, b) => a.nome.localeCompare(b.nome))
+              ),
               tap(() => {
                 this.carregandoCidades$.next(false);
               })
