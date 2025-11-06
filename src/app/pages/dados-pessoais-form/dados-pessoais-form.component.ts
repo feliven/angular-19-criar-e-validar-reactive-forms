@@ -102,7 +102,21 @@ export class DadosPessoaisFormComponent implements OnInit {
     this.addListenerEstado();
   }
 
-  carregarEstados(): void {
+  onAnterior(): void {
+    this.salvarDadosInseridos();
+    this.router.navigate(['/cadastro/area-atuacao']);
+  }
+
+  onProximo(): void {
+    if (this.dadosPessoaisForm.valid) {
+      this.salvarDadosInseridos();
+      this.router.navigate(['/cadastro/confirmacao']);
+    } else {
+      this.dadosPessoaisForm.markAllAsTouched();
+    }
+  }
+
+  private carregarEstados(): void {
     this.estados$ = this.ibgeService
       .getTodosOsEstados()
       .pipe(
@@ -110,7 +124,7 @@ export class DadosPessoaisFormComponent implements OnInit {
       );
   }
 
-  addListenerEstado(): void {
+  private addListenerEstado(): void {
     const estadoControl = this.dadosPessoaisForm.get('estado');
     if (estadoControl) {
       this.cidades$ = estadoControl.valueChanges.pipe(
@@ -136,22 +150,8 @@ export class DadosPessoaisFormComponent implements OnInit {
     }
   }
 
-  resetarCidades(): void {
+  private resetarCidades(): void {
     this.dadosPessoaisForm.get('cidade')?.setValue('');
-  }
-
-  onAnterior(): void {
-    this.salvarDadosInseridos();
-    this.router.navigate(['/cadastro/area-atuacao']);
-  }
-
-  onProximo(): void {
-    if (this.dadosPessoaisForm.valid) {
-      this.salvarDadosInseridos();
-      this.router.navigate(['/cadastro/confirmacao']);
-    } else {
-      this.dadosPessoaisForm.markAllAsTouched();
-    }
   }
 
   private salvarDadosInseridos(): void {
