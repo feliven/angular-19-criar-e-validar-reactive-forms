@@ -28,6 +28,7 @@ import {
   Estado,
   IbgeService,
 } from '../../shared/services/ibge.service';
+import { cpfValidator } from '../../shared/validators/cpf.validator';
 
 // interface DadosFormularioInterface {
 //   nomeCompleto: string;
@@ -87,6 +88,7 @@ export class DadosPessoaisFormComponent implements OnInit {
     this.dadosPessoaisForm = this.formBuilder.group(
       {
         nomeCompleto: ['', Validators.required],
+        cpf: ['', [Validators.required, cpfValidator]],
         estado: ['', Validators.required],
         cidade: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
