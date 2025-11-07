@@ -54,6 +54,11 @@ export const senhasIguaisValidator: ValidatorFn = (
   // senhasIguaisValidator takes an AbstractControl and returns either ValidationErrors or null.
   // It gets references to two form controls: senha E repitaSenha.
 
+  // Only validate if both fields have values
+  if (!senha?.value || !repitaSenha?.value) {
+    return null; // Don't show error if fields are empty
+  }
+
   return senha && repitaSenha && senha.value === repitaSenha.value
     ? null
     : { senhasSaoDiferentes: true };

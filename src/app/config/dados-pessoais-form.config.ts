@@ -103,7 +103,7 @@ export function getDadosPessoaisFormConfig(
           required: 'Confirmação de senha é obrigatória',
           senhasSaoDiferentes: 'As senhas não coincidem',
         },
-        validators: [Validators.required, senhasIguaisValidator],
+        validators: [Validators.required],
         asyncValidators: [],
         width: 'half',
       },

@@ -27,18 +27,57 @@
             [formControlName]="campo.formControlName"
             [placeholder]="campo.placeholder || ''"
           />
-          @if ( dadosPessoaisForm.get(campo.formControlName)?.invalid &&
-          dadosPessoaisForm.get(campo.formControlName)?.touched) { @for
-          (mensagemErro of campo.errorMessages | keyvalue; track $index) { @if
-          (dadosPessoaisForm.get(campo.formControlName)?.errors?.[mensagemErro.key])
-          {
-          <span>{{ mensagemErro.value }}</span>
-          } }
-
-          <div class="cadastro-form__error">Nome completo é obrigatório</div>
-          }
         </div>
-        } }
+        } @else if (retornaTipoDeCampoFormulario(campo, "password")) {
+
+        <div
+          class="cadastro-form__field"
+          [ngClass]="{ 'cadastro-form__field--half': campo.width === 'half' }"
+        >
+          <label [for]="campo.formControlName" class="cadastro-form__label">{{
+            campo.label
+          }}</label>
+          <input
+            [id]="campo.formControlName"
+            [type]="campo.type"
+            class="cadastro-form__input"
+            [formControlName]="campo.formControlName"
+          />
+        </div>
+
+        } @else if (retornaTipoDeCampoFormulario(campo, "select")) {
+        <div
+          class="cadastro-form__field"
+          [ngClass]="{ 'cadastro-form__field--half': campo.width === 'half' }"
+        >
+          <label [for]="campo.formControlName" class="cadastro-form__label">{{
+            campo.label
+          }}</label>
+          <select
+            [id]="campo.formControlName"
+            class="cadastro-form__select"
+            [formControlName]="campo.formControlName"
+          >
+            <option value="" disabled selected>{{ campo.placeholder }}</option>
+
+            @if(campo.formControlName==="estado"){ @for (estado of (estados$ |
+            async); track $index) {
+            <option [value]="estado.sigla">{{ estado.nome }}</option>
+            } } @else if (campo.formControlName==="cidade") { @for (cidade of
+            (cidades$ | async); track $index) {
+            <option [value]="cidade.nome">{{ cidade.nome }}</option>
+            }}
+          </select>
+        </div>
+        } @if ( dadosPessoaisForm.get(campo.formControlName)?.invalid &&
+        dadosPessoaisForm.get(campo.formControlName)?.touched) { @for
+        (mensagemErro of campo.errorMessages | keyvalue; track $index) { @if
+        (dadosPessoaisForm.get(campo.formControlName)?.errors?.[mensagemErro.key])
+        {
+        <div class="cadastro-form__error">
+          <span>{{ mensagemErro.value }}</span>
+        </div>
+        } } } }
 
         <div class="cadastro-form__actions">
           <app-button
