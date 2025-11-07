@@ -11,7 +11,10 @@ export class FormularioDinamicoService {
 
   constructor(private formBuilder: FormBuilder) {}
 
-  ConfiguracoesFormulario(nomeDoFormulario: string, configuracoes: Function) {
+  registrarConfiguracoesFormulario(
+    nomeDoFormulario: string,
+    configuracoes: Function
+  ) {
     this.configuracoesDoFormulario[nomeDoFormulario] = configuracoes;
   }
 

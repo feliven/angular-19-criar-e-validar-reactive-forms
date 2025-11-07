@@ -1,4 +1,5 @@
 import { Validators } from '@angular/forms';
+
 import { ConfiguracaoDeFormulario } from '../shared/models/configurar-formulario.interface';
 import { cpfValidator } from '../shared/validators/cpf.validator';
 import { senhasIguaisValidator } from '../pages/dados-pessoais-form/dados-pessoais-form.component';
