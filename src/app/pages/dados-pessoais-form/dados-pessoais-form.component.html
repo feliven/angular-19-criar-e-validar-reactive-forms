@@ -79,6 +79,178 @@
         </div>
         } } } }
 
+        <!-- Campos de Estado e Cidade (lado a lado) -->
+        <ng-container *ngIf="possuiCampo('estado') && possuiCampo('cidade')">
+          <div class="cadastro-form__row">
+            <!-- Campo Estado -->
+            <div class="cadastro-form__field cadastro-form__field--half">
+              <label for="estado" class="cadastro-form__label">{{
+                getCampoPorNome("estado").label
+              }}</label>
+              <select
+                id="estado"
+                class="cadastro-form__select"
+                formControlName="estado"
+              >
+                <option value="" disabled selected>
+                  {{ getCampoPorNome("estado").placeholder || "Selecione" }}
+                </option>
+                <ng-container *ngIf="estados$ | async as estados">
+                  <option *ngFor="let estado of estados" [value]="estado.sigla">
+                    {{ estado.nome }}
+                  </option>
+                </ng-container>
+              </select>
+              <div
+                *ngIf="
+                  dadosPessoaisForm.get('estado')?.invalid &&
+                  dadosPessoaisForm.get('estado')?.touched
+                "
+                class="cadastro-form__error"
+              >
+                <ng-container
+                  *ngFor="
+                    let error of getCampoPorNome('estado').errorMessages
+                      | keyvalue
+                  "
+                >
+                  <span
+                    *ngIf="dadosPessoaisForm.get('estado')?.errors?.[error.key]"
+                    >{{ error.value }}</span
+                  >
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Campo Cidade -->
+            <div class="cadastro-form__field cadastro-form__field--half">
+              <label for="cidade" class="cadastro-form__label">{{
+                getCampoPorNome("cidade").label
+              }}</label>
+              <select
+                id="cidade"
+                class="cadastro-form__select"
+                formControlName="cidade"
+                [disabled]="
+                  (carregandoCidades$ | async) ||
+                  !dadosPessoaisForm.get('estado')?.value
+                "
+              >
+                <option value="" disabled selected>
+                  {{
+                    (carregandoCidades$ | async)
+                      ? "Carregando..."
+                      : getCampoPorNome("cidade").placeholder || "Selecione"
+                  }}
+                </option>
+                <ng-container *ngIf="cidades$ | async as cidades">
+                  <option *ngFor="let cidade of cidades" [value]="cidade.nome">
+                    {{ cidade.nome }}
+                  </option>
+                </ng-container>
+              </select>
+              <div
+                *ngIf="
+                  dadosPessoaisForm.get('cidade')?.invalid &&
+                  dadosPessoaisForm.get('cidade')?.touched
+                "
+                class="cadastro-form__error"
+              >
+                <ng-container
+                  *ngFor="
+                    let error of getCampoPorNome('cidade').errorMessages
+                      | keyvalue
+                  "
+                >
+                  <span
+                    *ngIf="dadosPessoaisForm.get('cidade')?.errors?.[error.key]"
+                    >{{ error.value }}</span
+                  >
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Campos Senha e Confirma Senha (lado a lado) -->
+        <ng-container
+          *ngIf="possuiCampo('senha') && possuiCampo('repitaSenha')"
+        >
+          <div class="cadastro-form__row">
+            <!-- Campo Senha -->
+            <div class="cadastro-form__field cadastro-form__field--half">
+              <label for="senha" class="cadastro-form__label">{{
+                getCampoPorNome("senha").label
+              }}</label>
+              <input
+                id="senha"
+                type="password"
+                class="cadastro-form__input"
+                formControlName="senha"
+              />
+              <div
+                *ngIf="
+                  dadosPessoaisForm.get('senha')?.invalid &&
+                  dadosPessoaisForm.get('senha')?.touched
+                "
+                class="cadastro-form__error"
+              >
+                <ng-container
+                  *ngFor="
+                    let error of getCampoPorNome('senha').errorMessages
+                      | keyvalue
+                  "
+                >
+                  <span
+                    *ngIf="dadosPessoaisForm.get('senha')?.errors?.[error.key]"
+                    >{{ error.value }}</span
+                  >
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Campo Confirma Senha -->
+            <div class="cadastro-form__field cadastro-form__field--half">
+              <label for="repitaSenha" class="cadastro-form__label">{{
+                getCampoPorNome("repitaSenha").label
+              }}</label>
+              <input
+                id="repitaSenha"
+                type="password"
+                class="cadastro-form__input"
+                formControlName="repitaSenha"
+              />
+              <div
+                *ngIf="
+                  dadosPessoaisForm.get('repitaSenha')?.invalid &&
+                  dadosPessoaisForm.get('repitaSenha')?.touched
+                "
+                class="cadastro-form__error"
+              >
+                <ng-container
+                  *ngFor="
+                    let error of getCampoPorNome('repitaSenha').errorMessages
+                      | keyvalue
+                  "
+                >
+                  <span
+                    *ngIf="dadosPessoaisForm.get('repitaSenha')?.errors?.[error.key]"
+                    >{{ error.value }}</span
+                  >
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Mensagem de erro para senhas não coincidentes -->
+        <div
+          *ngIf="dadosPessoaisForm.errors?.['senhasNaoIguais'] && dadosPessoaisForm.get('repitaSenha')?.touched"
+          class="cadastro-form__error"
+        >
+          As senhas não coincidem
+        </div>
+
         <div class="cadastro-form__actions">
           <app-button
             text="Anterior"

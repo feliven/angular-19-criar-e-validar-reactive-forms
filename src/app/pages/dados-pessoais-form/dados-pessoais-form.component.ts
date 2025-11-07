@@ -116,6 +116,20 @@ export class DadosPessoaisFormComponent implements OnInit {
     this.addListenerEstado();
   }
 
+  possuiCampo(name: string): boolean {
+    return this.configuracaoDeFormulario.campos.some(
+      (field) => field.formControlName === name
+    );
+  }
+
+  getCampoPorNome(name: string): VariaveisFormulario {
+    return (
+      this.configuracaoDeFormulario.campos.find(
+        (field) => field.formControlName === name
+      ) || ({} as VariaveisFormulario)
+    );
+  }
+
   onAnterior(): void {
     this.salvarDadosInseridos();
     this.router.navigate(['/cadastro/area-atuacao']);
