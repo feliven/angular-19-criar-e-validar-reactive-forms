@@ -125,18 +125,48 @@
         <div class="cadastro-form__field">
           <label class="cadastro-form__label">Resumo</label>
           <textarea
+            id="resumo"
             class="cadastro-form__textarea"
             formControlName="resumo"
+            maxlength="70"
+            rows="3"
           ></textarea>
+
+          <div class="cadastro-form__field-info">
+            <span>Faça um resumo em até 70 caracteres.</span>
+            <span>{{ caracteresRestantes }}</span>
+          </div>
+
+          @if (perfilForm.get('resumo')?.invalid &&
+          perfilForm.get('resumo')?.touched) { @if
+          (perfilForm.get('resumo')?.errors?.['required']) {
+          <div class="cadastro-form__error">Resumo é obrigatório</div>
+          } @else if (perfilForm.get('resumo')?.errors?.['minlength']) {
+          <div class="cadastro-form__error">
+            Resumo deve ter pelo menos 10 caracteres
+          </div>
+          } }
         </div>
 
         <div class="cadastro-form__field">
-          <label class="cadastro-form__label">Portfolio</label>
+          <label class="cadastro-form__label">Portfólio</label>
           <input
             type="url"
             class="cadastro-form__input"
             formControlName="portfolio"
           />
+
+          @if (perfilForm.get('portfolio')?.invalid &&
+          perfilForm.get('portfolio')?.touched) { @if
+          (perfilForm.get('portfolio')?.errors?.['required']) {
+          <div class="cadastro-form__error">
+            Link para o portfólio é obrigatório
+          </div>
+          } @else if (perfilForm.get('portfolio')?.errors?.['pattern']) {
+          <div class="cadastro-form__error">
+            URL inválida. Inclua http:// ou https://
+          </div>
+          } }
         </div>
 
         <div class="cadastro-form__field">
@@ -146,6 +176,14 @@
             class="cadastro-form__input"
             formControlName="linkedin"
           />
+
+          @if (perfilForm.get('linkedin')?.invalid &&
+          perfilForm.get('linkedin')?.touched) { @if
+          (perfilForm.get('linkedin')?.errors?.['required']) {
+          <div class="cadastro-form__error">LinkedIn é obrigatório</div>
+          } @else if (perfilForm.get('linkedin')?.errors?.['pattern']) {
+          <div class="cadastro-form__error">URL inválida. Inclua https://</div>
+          } }
         </div>
 
         <div class="cadastro-form__actions">
