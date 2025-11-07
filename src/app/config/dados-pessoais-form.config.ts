@@ -29,7 +29,7 @@ export function getDadosPessoaisFormConfig(
         formControlName: 'cpf',
         type: 'text',
         required: true,
-        placeholder: '123,456,789-00',
+        placeholder: '123.456.789-00',
         errorMessages: {
           required: 'CPF é obrigatório',
           cpfInvalido: 'CPF inválido',
@@ -77,7 +77,7 @@ export function getDadosPessoaisFormConfig(
         },
         validators: [Validators.required, Validators.email],
         asyncValidators: [emailExisteValidator(emailService)],
-        width: 'half',
+        width: 'full',
       },
       {
         label: 'Senha',

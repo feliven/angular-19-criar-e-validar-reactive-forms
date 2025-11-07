@@ -1,177 +1,44 @@
 <div class="cadastro-form">
   <div class="cadastro-form__container">
     <div class="cadastro-form__card">
-      <h2 class="cadastro-form__title">Crie seu cadastro</h2>
+      <h2 class="cadastro-form__title">
+        {{ configuracaoDeFormulario.titulo }}
+      </h2>
 
       <p class="cadastro-form__description">
-        Crie seu perfil gratuitamente para começar a trabalhar com os melhores
-        freelancers. Em seguida, você poderá dar mais detalhes sobre suas
-        demandas e sobre sua forma de trabalho.
+        {{ configuracaoDeFormulario.descricao }}
       </p>
 
       <form [formGroup]="dadosPessoaisForm" (ngSubmit)="onProximo()">
-        <div class="cadastro-form__field">
-          <label for="nomeCompleto" class="cadastro-form__label"
-            >Nome Completo</label
-          >
+        @for (campo of configuracaoDeFormulario.campos; track $index) { @if
+        (retornaTipoDeCampoFormulario(campo, "text") ||
+        retornaTipoDeCampoFormulario(campo, "email")) {
+        <div
+          class="cadastro-form__field"
+          [ngClass]="{ 'cadastro-form__field--half': campo.width === 'half' }"
+        >
+          <label [for]="campo.formControlName" class="cadastro-form__label">{{
+            campo.label
+          }}</label>
           <input
-            id="nomeCompleto"
-            type="text"
+            [id]="campo.formControlName"
+            [type]="campo.type"
             class="cadastro-form__input"
-            formControlName="nomeCompleto"
+            [formControlName]="campo.formControlName"
+            [placeholder]="campo.placeholder || ''"
           />
-          @if ( dadosPessoaisForm.get('nomeCompleto')?.invalid &&
-          dadosPessoaisForm.get('nomeCompleto')?.touched) {
+          @if ( dadosPessoaisForm.get(campo.formControlName)?.invalid &&
+          dadosPessoaisForm.get(campo.formControlName)?.touched) { @for
+          (mensagemErro of campo.errorMessages | keyvalue; track $index) { @if
+          (dadosPessoaisForm.get(campo.formControlName)?.errors?.[mensagemErro.key])
+          {
+          <span>{{ mensagemErro.value }}</span>
+          } }
 
           <div class="cadastro-form__error">Nome completo é obrigatório</div>
           }
         </div>
-
-        <div class="cadastro-form__field">
-          <label for="cpf" class="cadastro-form__label">CPF</label>
-          <input
-            id="cpf"
-            type="text"
-            class="cadastro-form__input"
-            formControlName="cpf"
-            placeholder="123.456.789-00"
-            maxlength="11"
-          />
-          @if ( dadosPessoaisForm.get('cpf')?.invalid &&
-          dadosPessoaisForm.get('cpf')?.touched) {
-          <div class="cadastro-form__error">
-            @if (dadosPessoaisForm.get('cpf')?.errors?.['required']) {
-            <span>CPF é obrigatório</span>} @if
-            (dadosPessoaisForm.get('cpf')?.errors?.['cpfInvalido']) {
-            <span>CPF inválido</span>}
-          </div>
-          }
-        </div>
-
-        <div class="cadastro-form__row">
-          <div class="cadastro-form__field cadastro-form__field--half">
-            <label for="estado" class="cadastro-form__label">Estado</label>
-            <select
-              id="estado"
-              class="cadastro-form__select"
-              formControlName="estado"
-            >
-              <option value="" disabled selected>Selecione</option>
-              @for (estado of (estados$ | async); track $index) {
-              <option [value]="estado.sigla">{{ estado.nome }}</option>
-              }
-              <!-- <ng-container *ngIf="estado$ | async as estados">
-                <option *ngFor="let estado of estados" [value]="estado.sigla">
-                  {{ estado.nome }}
-                </option>
-              </ng-container> -->
-            </select>
-            @if (dadosPessoaisForm.get('estado')?.invalid &&
-            dadosPessoaisForm.get('estado')?.touched) {
-            <div class="cadastro-form__error">Estado é obrigatório</div>
-            }
-          </div>
-
-          <div class="cadastro-form__field cadastro-form__field--half">
-            <label for="cidade" class="cadastro-form__label">Cidade</label>
-
-            <select
-              id="cidade"
-              class="cadastro-form__select"
-              formControlName="cidade"
-            >
-              <option value="" disabled selected>Selecione</option>
-              @for (cidade of (cidades$ | async); track $index) {
-              <option [value]="cidade.nome">{{ cidade.nome }}</option>
-              }
-            </select>
-            @if ( dadosPessoaisForm.get('cidade')?.invalid &&
-            dadosPessoaisForm.get('cidade')?.touched) {
-            <div class="cadastro-form__error">Cidade é obrigatória</div>
-            }
-          </div>
-        </div>
-
-        <div class="cadastro-form__field">
-          <label for="email" class="cadastro-form__label">Email</label>
-          <div class="input-container">
-            <input
-              id="email"
-              type="email"
-              class="cadastro-form__input"
-              formControlName="email"
-              [ngClass]="{
-                'cadastro-form__input--error':
-                  dadosPessoaisForm.get('email')?.invalid &&
-                  dadosPessoaisForm.get('email')?.touched,
-                'cadastro-form__input--pending':
-                  dadosPessoaisForm.get('email')?.pending
-              }"
-            />
-          </div>
-          <div class="cadastro-form__error-container">
-            @if ( dadosPessoaisForm.get('email')?.invalid &&
-            dadosPessoaisForm.get('email')?.touched &&
-            !dadosPessoaisForm.get('email')?.pending) {
-            <div class="cadastro-form__error">
-              @if (dadosPessoaisForm.get('email')?.errors?.['required']) {
-              <span>Email é obrigatório</span>} @else if
-              (dadosPessoaisForm.get('email')?.errors?.['email']) {
-              <span>Email inválido</span>} @else if
-              (dadosPessoaisForm.get('email')?.errors?.['emailExiste']) {
-              <span>Email já cadastrado!</span>
-              }
-            </div>
-            } @if (dadosPessoaisForm.get('email')?.pending){
-            <div class="cadastro-form__pending">
-              <span>Verificando disponobilidade...</span>
-            </div>
-            }
-          </div>
-        </div>
-
-        <div class="cadastro-form__row">
-          <div class="cadastro-form__field cadastro-form__field--half">
-            <label for="senha" class="cadastro-form__label">Senha</label>
-            <input
-              id="senha"
-              type="password"
-              class="cadastro-form__input"
-              formControlName="senha"
-            />
-            @if ( dadosPessoaisForm.get('senha')?.invalid &&
-            dadosPessoaisForm.get('senha')?.touched) {
-            <div class="cadastro-form__error">
-              @if (dadosPessoaisForm.get('senha')?.errors?.['required']) {
-              <span>Senha é obrigatória</span>} @if
-              (dadosPessoaisForm.get('senha')?.errors?.['minlength']) {
-              <span>Senha deve ter pelo menos 6 caracteres</span>}
-            </div>
-            }
-          </div>
-
-          <div class="cadastro-form__field cadastro-form__field--half">
-            <label for="repitaSenha" class="cadastro-form__label"
-              >Repita a senha</label
-            >
-            <input
-              id="repitaSenha"
-              type="password"
-              class="cadastro-form__input"
-              formControlName="repitaSenha"
-            />
-            @if ( dadosPessoaisForm.get('repitaSenha')?.invalid &&
-            dadosPessoaisForm.get('repitaSenha')?.touched) {
-            <div class="cadastro-form__error">
-              @if (dadosPessoaisForm.get('repitaSenha')?.errors?.['required'])
-              {<span>Confirmação de senha é obrigatória</span>}
-            </div>
-            } @if (dadosPessoaisForm.errors?.['senhasSaoDiferentes'] &&
-            dadosPessoaisForm.get('repitaSenha')?.touched) {
-            <div class="cadastro-form__error">As senhas não coincidem</div>
-            }
-          </div>
-        </div>
+        } }
 
         <div class="cadastro-form__actions">
           <app-button
