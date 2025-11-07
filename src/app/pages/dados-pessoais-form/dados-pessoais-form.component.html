@@ -94,21 +94,40 @@
 
         <div class="cadastro-form__field">
           <label for="email" class="cadastro-form__label">Email</label>
-          <input
-            id="email"
-            type="email"
-            class="cadastro-form__input"
-            formControlName="email"
-          />
-          @if ( dadosPessoaisForm.get('email')?.invalid &&
-          dadosPessoaisForm.get('email')?.touched) {
-          <div class="cadastro-form__error">
-            @if (dadosPessoaisForm.get('email')?.errors?.['required']) {
-            <span>Email é obrigatório</span>} @if
-            (dadosPessoaisForm.get('email')?.errors?.['email']) {
-            <span>Email inválido</span>}
+          <div class="input-container">
+            <input
+              id="email"
+              type="email"
+              class="cadastro-form__input"
+              formControlName="email"
+              [ngClass]="{
+                'cadastro-form__input--error':
+                  dadosPessoaisForm.get('email')?.invalid &&
+                  dadosPessoaisForm.get('email')?.touched,
+                'cadastro-form__input--pending':
+                  dadosPessoaisForm.get('email')?.pending
+              }"
+            />
           </div>
-          }
+          <div class="cadastro-form__error-container">
+            @if ( dadosPessoaisForm.get('email')?.invalid &&
+            dadosPessoaisForm.get('email')?.touched &&
+            !dadosPessoaisForm.get('email')?.pending) {
+            <div class="cadastro-form__error">
+              @if (dadosPessoaisForm.get('email')?.errors?.['required']) {
+              <span>Email é obrigatório</span>} @else if
+              (dadosPessoaisForm.get('email')?.errors?.['email']) {
+              <span>Email inválido</span>} @else if
+              (dadosPessoaisForm.get('email')?.errors?.['emailExiste']) {
+              <span>Email já cadastrado!</span>
+              }
+            </div>
+            } @if (dadosPessoaisForm.get('email')?.pending){
+            <div class="cadastro-form__pending">
+              <span>Verificando disponobilidade...</span>
+            </div>
+            }
+          </div>
         </div>
 
         <div class="cadastro-form__row">

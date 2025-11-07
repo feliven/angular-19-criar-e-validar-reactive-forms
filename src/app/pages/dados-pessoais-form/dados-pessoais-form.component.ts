@@ -29,6 +29,8 @@ import {
   IbgeService,
 } from '../../shared/services/ibge.service';
 import { cpfValidator } from '../../shared/validators/cpf.validator';
+import { emailExisteValidator } from '../../shared/validators/emailExiste.validator';
+import { EmailValidatorService } from '../../shared/services/email-validator.service';
 
 // interface DadosFormularioInterface {
 //   nomeCompleto: string;
@@ -77,7 +79,8 @@ export class DadosPessoaisFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private cadastroService: CadastroService,
-    private ibgeService: IbgeService
+    private ibgeService: IbgeService,
+    private emailService: EmailValidatorService
   ) {}
 
   ngOnInit(): void {
@@ -91,7 +94,11 @@ export class DadosPessoaisFormComponent implements OnInit {
         cpf: ['', [Validators.required, cpfValidator]],
         estado: ['', Validators.required],
         cidade: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
+        email: [
+          '',
+          [Validators.required, Validators.email],
+          [emailExisteValidator(this.emailService)],
+        ],
         senha: ['', [Validators.required, Validators.minLength(8)]],
         repitaSenha: ['', Validators.required],
       },
