@@ -2,7 +2,6 @@ import { Validators } from '@angular/forms';
 
 import { ConfiguracaoDeFormulario } from '../shared/models/configurar-formulario.interface';
 import { cpfValidator } from '../shared/validators/cpf.validator';
-import { senhasIguaisValidator } from '../pages/dados-pessoais-form/dados-pessoais-form.component';
 import { emailExisteValidator } from '../shared/validators/emailExiste.validator';
 
 export function getDadosPessoaisFormConfig(
@@ -101,7 +100,6 @@ export function getDadosPessoaisFormConfig(
         placeholder: '',
         errorMessages: {
           required: 'Confirmação de senha é obrigatória',
-          senhasSaoDiferentes: 'As senhas não coincidem',
         },
         validators: [Validators.required],
         asyncValidators: [],

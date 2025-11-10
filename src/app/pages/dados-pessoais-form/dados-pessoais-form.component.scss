@@ -90,3 +90,9 @@ input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+.cadastro-form__row {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
