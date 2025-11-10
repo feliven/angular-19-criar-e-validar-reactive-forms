@@ -161,11 +161,20 @@ export class DadosPessoaisFormComponent implements OnInit {
 
   private addListenerEstado(): void {
     const estadoControl = this.dadosPessoaisForm.get('estado');
-    if (estadoControl) {
+    const cidadeControl = this.dadosPessoaisForm.get('cidade');
+
+    if (estadoControl && cidadeControl) {
+      // Disable cidade initially if estado is empty
+      if (!estadoControl.value) {
+        cidadeControl.disable();
+      }
+
       this.cidades$ = estadoControl.valueChanges.pipe(
         startWith(''),
         tap(() => {
-          this.resetarCidades(), this.carregandoCidades$.next(true);
+          this.resetarCidades();
+          this.carregandoCidades$.next(true);
+          cidadeControl.disable(); // Disable while loading
         }),
         switchMap((uf) => {
           if (uf) {
@@ -175,10 +184,12 @@ export class DadosPessoaisFormComponent implements OnInit {
               ),
               tap(() => {
                 this.carregandoCidades$.next(false);
+                cidadeControl.enable(); // Enable when loaded
               })
             );
           }
           this.carregandoCidades$.next(false);
+          cidadeControl.disable(); // Keep disabled if no state selected
           return of([]);
         })
       );

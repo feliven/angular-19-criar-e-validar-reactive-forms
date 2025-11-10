@@ -161,10 +161,6 @@
               [id]="cidadeCampo.formControlName"
               class="cadastro-form__select"
               [formControlName]="cidadeCampo.formControlName"
-              [disabled]="
-                (carregandoCidades$ | async) ||
-                !dadosPessoaisForm.get('estado')?.value
-              "
             >
               <option value="" disabled selected>
                 {{
