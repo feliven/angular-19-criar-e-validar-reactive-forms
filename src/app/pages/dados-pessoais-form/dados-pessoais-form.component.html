@@ -101,6 +101,11 @@
               <span>{{ mensagemErro.value }}</span>
             </div>
             } } }
+            <!-- Senhas não coincidem -->
+            @if (dadosPessoaisForm.errors?.['senhasSaoDiferentes'] &&
+            dadosPessoaisForm.get('repitaSenha')?.touched) {
+            <div class="cadastro-form__error">As senhas não coincidem</div>
+            }
           </div>
           } }
         </div>
@@ -195,12 +200,6 @@
         {
         <!-- Handled in estado row -->
         } }
-
-        <!-- Form-level error: Senhas não coincidem -->
-        @if (dadosPessoaisForm.errors?.['senhasSaoDiferentes'] &&
-        dadosPessoaisForm.get('repitaSenha')?.touched) {
-        <div class="cadastro-form__error">As senhas não coincidem</div>
-        }
 
         <div class="cadastro-form__actions">
           <app-button
